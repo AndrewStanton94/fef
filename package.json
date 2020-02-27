@@ -1,0 +1,23 @@
+{
+	"name": "fef",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "babel src --out-dir dist"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"axios": "^0.19.0",
+		"jsdom": "^15.2.1",
+		"papaparse": "^5.1.0"
+	},
+	"devDependencies": {
+		"@babel/cli": "^7.6.4",
+		"@babel/core": "^7.6.4",
+		"@babel/preset-env": "^7.6.3"
+	}
+}
