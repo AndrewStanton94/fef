@@ -1,9 +1,9 @@
-import { getLocalFile, saveLocalFile } from './getFile';
-import { getData, setData } from './getData';
+import { getLocalFile, saveLocalFile } from '../io/getFile';
+import { getData, setData } from '../io/getData';
 import { processData } from './processData';
 import checkLinks from './checkLinks';
 
-import { writeJSON } from '../utils/files';
+import { writeJSON } from '../io/files';
 
 export class Fef {
 	constructor(url, dataType, options = {}) {

@@ -1,6 +1,6 @@
 const fs = require('fs');
 const { join } = require('path');
-import { writeFile } from '../utils/files';
+import { writeFile } from './files';
 
 const absFilePath = (relPath) => join(__dirname, relPath);
 

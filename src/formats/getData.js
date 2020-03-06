@@ -1,4 +1,4 @@
-import { csvToJSON, jsonToCSV } from '../utils/csv';
+import { csvToJSON, jsonToCSV } from './csv';
 import listsToObjects from '../utils/listsToObjects';
 
 const extractionMethods = {

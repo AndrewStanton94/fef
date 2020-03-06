@@ -2,7 +2,7 @@ const axios = require('axios');
 
 const { chunks } = require('../utils/karataev');
 const { yeahNah } = require('../utils/utils');
-const { writeJSON } = require('../utils/files');
+const { writeJSON } = require('../io/files');
 
 const extractResponseData = (academic, response) => {
 	let { url } = academic;
