@@ -39,7 +39,10 @@ export class Fef {
 
 	// Stages
 	getFile() {
-		return getLocalFile(this);
+		// TODO Add support for remote files
+		return getLocalFile(this.url).catch((err) => {
+			throw err;
+		});
 	}
 
 	extractDataFromFile() {
@@ -64,11 +67,12 @@ export class Fef {
 	}
 
 	run() {
-		this.getFile();
-		this.extractDataFromFile();
-		this.process();
-		this.save('csv');
-		// this.resultValidation();
-		// console.log('the data: ', this.data.filteredInput.matching);
+		this.getFile()
+			.then((x) => console.log('from run: ', x))
+			.catch((err) => console.error(err));
+
+		// this.extractDataFromFile();
+		// this.process();
+		// this.save('csv');
 	}
 }

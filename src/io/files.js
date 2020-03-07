@@ -3,15 +3,20 @@ const { join } = require('path');
 
 const absFilePath = (relPath) => join(__dirname, relPath);
 
-export const getLocalFile = (fef) => {
-	console.log(fef.url);
-	const fileData = fs.readFileSync(absFilePath(fef.url), {
-		encoding: 'utf8',
-	});
+export const getLocalFile = (url) =>
+	new Promise((resolve, reject) => {
+		const absURL = absFilePath(url);
+		console.log('Fetching from this path: ', absURL);
 
-	fef.data.fileData = fileData;
-	return fef;
-};
+		fs.readFile(absURL, (err, data) => {
+			if (err) {
+				console.error('Issue getting the file:');
+				reject(err);
+			}
+
+			resolve(data);
+		});
+	});
 
 const writeFile = (relPath, data) => {
 	fs.writeFile(absFilePath(relPath), data, (err) => {
