@@ -1,5 +1,5 @@
 import { getLocalFile, saveLocalFile, writeJSON } from '../io/files';
-import { getData, setData } from '../io/getData';
+import { getData, setData } from '../formats/getData';
 import { processData } from './processData';
 import checkLinks from './checkLinks';
 
