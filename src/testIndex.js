@@ -1,10 +1,7 @@
 import { Fef } from './fef/fef';
 const { JSDOM } = require('jsdom');
 
-const processor = new Fef('../../data/input2.csv', 'csv', {
-	debug: {
-		limit: 1,
-	},
+const processor = new Fef('../../data/dataPort.csv', 'csv', {
 });
 
 processor.setInputPreparation((item) => {
@@ -26,17 +23,28 @@ processor.setItemTransformation(({ address, links }) => {
 		const fragment = JSDOM.fragment(link);
 		const a = fragment.children[0];
 		const href = a.href;
+		const textContent = a.textContent;
+		let hostname = '';
+		try {
+			hostname = new URL(href).hostname;
+		} catch (error) {
+			console.warn(`Invalid input on page: ${address} => ${href}` );
+			hostname = `INVALID: ${href}`;
+		}
 
 		return {
 			href,
-			hostname:  new URL(href).hostname
+			textContent,
+			hostname
 		};
-	}).filter(({hostname}) => hostname.includes('port.ac.uk'));
+	}).filter(({hostname}) => hostname.includes('port.ac.uk') || hostname.includes('INVALID'));
 
-	return localURLsOpeningInNewTabs.map(({href}) => ({
+	return localURLsOpeningInNewTabs.map(({href, textContent, hostname}) => ({
 		page: address,
+		textContent,
+		hostname,
 		linksTo: href
 	}));
 });
 
-processor.run('../../data/out/data.csv');
+processor.run('../../data/out/dataPort.csv');
