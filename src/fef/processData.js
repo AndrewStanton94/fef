@@ -5,17 +5,23 @@ export const processData = (fef) => {
 		`There are ${fef.data.extractedData.length} items from the file`
 	);
 
-	if (fef.inputFilter) {
-	}
-	else {
+	if (fef.inputPreparation) {
+		console.log('Will filter');
+
+		const preparedItems = fef.data.extractedData
+			.map(fef.inputPreparation)
+			.filter((item) => typeof item !== 'undefined');
+		console.log(`${preparedItems.length} remain after input preparation`);
+		fef.data.validData = preparedItems;
+	} else {
+		console.log('Won\'t filter');
 		fef.data.validData = fef.data.extractedData;
-
 	}
 
-	const processedData = fef.data.validData.flatMap(fef.transformation);
-	fef.data.processed = processedData;
+	// const processedData = fef.data.validData.flatMap(fef.transformation);
+	// fef.data.processed = processedData;
 
-	fef.saveJSON('../../data/debug/processedData.json', processedData);
+	// fef.saveJSON('../../data/debug/processedData.json', processedData);
 
 	return fef;
 };

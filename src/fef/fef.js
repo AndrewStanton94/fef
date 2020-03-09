@@ -25,8 +25,8 @@ export class Fef {
 	}
 
 	// Would-be Setters
-	setInputFilter(filter) {
-		this.inputFilter = filter;
+	setInputPreparation(filter) {
+		this.inputPreparation = filter;
 	}
 
 	setItemTransformation(transformation) {
@@ -51,8 +51,8 @@ export class Fef {
 		return fef;
 	}
 
-	process() {
-		return processData(this);
+	process(fef) {
+		return processData(fef);
 	}
 
 	resultValidation() {
@@ -71,7 +71,8 @@ export class Fef {
 	run() {
 		this.getFile()
 			.then((data) => this.extractDataFromFile(data, this))
-			.then((x) => console.log('from extract: ', x))
+			.then(() => this.process(this))
+			.then((x) => console.log('from process: ', x))
 			.catch((err) => console.error(err));
 
 		// this.process();
