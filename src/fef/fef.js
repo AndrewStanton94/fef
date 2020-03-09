@@ -1,5 +1,5 @@
 import { getLocalFile, saveLocalFile, writeJSON } from '../io/files';
-import { getData, setData } from '../formats/getData';
+import { extractData, setData } from '../formats/getData';
 import { processData } from './processData';
 import checkLinks from './checkLinks';
 
@@ -45,8 +45,10 @@ export class Fef {
 		});
 	}
 
-	extractDataFromFile() {
-		return getData(this);
+	extractDataFromFile(data, fef) {
+		const extractedData = extractData(data, fef.dataType, ...fef.isDebug());
+		fef.data.extractedData = extractedData;
+		return fef;
 	}
 
 	process() {
@@ -68,10 +70,10 @@ export class Fef {
 
 	run() {
 		this.getFile()
-			.then((x) => console.log('from run: ', x))
+			.then((data) => this.extractDataFromFile(data, this))
+			.then((x) => console.log('from extract: ', x))
 			.catch((err) => console.error(err));
 
-		// this.extractDataFromFile();
 		// this.process();
 		// this.save('csv');
 	}

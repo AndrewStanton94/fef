@@ -12,16 +12,14 @@ const exportPrepMethods = {
 	csv: (dataToPrepareForExport) => jsonToCSV(dataToPrepareForExport),
 };
 
-export const getData = (fef) => {
-	const [debugging, debugOptions] = fef.isDebug();
-	let extractedData = extractionMethods[fef.dataType](fef.data.fileData);
+export const extractData = (data, dataType, debugging, debugOptions) => {
+	let extractedData = extractionMethods[dataType](data);
 
 	if (debugging && debugOptions && debugOptions.limit) {
 		extractedData = extractedData.slice(0, debugOptions.limit);
 	}
 
-	fef.data.extractedData = extractedData;
-	return fef;
+	return extractedData;
 };
 
 export const setData = (fef) => {
