@@ -8,7 +8,7 @@ export const getLocalFile = (url) =>
 		const absURL = absFilePath(url);
 		console.log('Fetching from this path: ', absURL);
 
-		fs.readFile(absURL, (err, data) => {
+		fs.readFile(absURL, 'utf-8', (err, data) => {
 			if (err) {
 				console.error('Issue getting the file:');
 				reject(err);
