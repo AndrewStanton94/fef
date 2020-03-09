@@ -25,8 +25,8 @@ const writeFile = (relPath, data) => {
 	});
 };
 
-export const saveLocalFile = (fef, relPath) => {
-	writeFile(relPath, fef.data.export);
+export const saveLocalFile = (exportableData, outputPath) => {
+	writeFile(outputPath, exportableData);
 };
 
 export const writeJSON = (relPath, data) =>

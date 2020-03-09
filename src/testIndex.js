@@ -39,4 +39,4 @@ processor.setItemTransformation(({ address, links }) => {
 	}));
 });
 
-processor.run();
+processor.run('../../data/out/data.csv');

@@ -62,20 +62,18 @@ export class Fef {
 		return;
 	}
 
-	save(format) {
-		console.log(Object.keys(this.data));
-		setData(this);
-		saveLocalFile(this, '../../data/out/data.csv');
+	save(format, outputPath, fef) {
+		const exportableData = setData(format, fef.data.processed);
+		saveLocalFile(exportableData, outputPath);
+		return fef;
 	}
 
-	run() {
+	run(outputPath) {
 		this.getFile()
 			.then((data) => this.extractDataFromFile(data, this))
 			.then(() => this.process(this))
+			.then(() => this.save('csv', outputPath, this))
 			.then((x) => console.log('from process: ', x))
 			.catch((err) => console.error(err));
-
-		// this.process();
-		// this.save('csv');
 	}
 }

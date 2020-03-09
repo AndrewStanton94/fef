@@ -22,6 +22,6 @@ export const extractData = (data, dataType, debugging, debugOptions) => {
 	return extractedData;
 };
 
-export const setData = (fef) => {
-	fef.data.export = exportPrepMethods[fef.dataType](fef.data.processed);
+export const setData = (format, data) => {
+	return exportPrepMethods[format](data);
 };
