@@ -18,8 +18,8 @@ export const processData = (fef) => {
 		fef.data.validData = fef.data.extractedData;
 	}
 
-	// const processedData = fef.data.validData.flatMap(fef.transformation);
-	// fef.data.processed = processedData;
+	const processedData = fef.data.validData.flatMap(fef.transformation);
+	fef.data.processed = processedData;
 
 	// fef.saveJSON('../../data/debug/processedData.json', processedData);
 
