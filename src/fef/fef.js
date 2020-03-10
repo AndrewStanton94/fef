@@ -1,4 +1,5 @@
 import { getLocalFile, saveLocalFile, writeJSON } from '../io/files';
+import { getFromBrowser } from '../io/browser';
 import { extractData, setData } from '../formats/getData';
 import { processData } from './processData';
 import checkLinks from './checkLinks';
@@ -40,6 +41,11 @@ export class Fef {
 	// Stages
 	getFile() {
 		// TODO Add support for remote files
+		if (this.url.startsWith('#')) {
+			return getFromBrowser(this.url).catch((err) => {
+				throw err;
+			});
+		}
 		return getLocalFile(this.url).catch((err) => {
 			throw err;
 		});
