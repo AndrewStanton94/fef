@@ -5,7 +5,9 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"build": "babel src --out-dir dist"
+		"build": "babel src --out-dir dist",
+		"start": "parcel src/webIndex.html",
+		"webBuild": "parcel build src/webIndex.html --public-url ./"
 	},
 	"keywords": [],
 	"author": "",
@@ -18,6 +20,7 @@
 	"devDependencies": {
 		"@babel/cli": "^7.6.4",
 		"@babel/core": "^7.6.4",
-		"@babel/preset-env": "^7.6.3"
+		"@babel/preset-env": "^7.6.3",
+		"parcel-bundler": "^1.12.4"
 	}
 }
