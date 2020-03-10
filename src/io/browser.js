@@ -21,7 +21,7 @@ export const getFromBrowser = (elementId) =>
 			reader.readAsText(file);
 			reader.onload = (loadEvent) => {
 				const extractedData = loadEvent.target.result;
-				console.log(extractedData);
+				console.log('Data extracted by FileReader: ', extractedData);
 				resolve(extractedData);
 			};
 			reader.onerror = (err) => {
