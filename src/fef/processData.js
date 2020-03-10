@@ -11,7 +11,13 @@ export const processData = (fef) => {
 		const preparedItems = fef.data.extractedData
 			.map(fef.inputPreparation)
 			.filter((item) => typeof item !== 'undefined');
-		console.log(`${preparedItems.length} remain after input preparation`);
+
+		const itemsRemaining = preparedItems.length;
+		if (!itemsRemaining) {
+			return Promise.reject('Filtering removed all items');
+		}
+		console.log(`${itemsRemaining} remain after input preparation`);
+
 		fef.data.validData = preparedItems;
 	} else {
 		console.log('Won\'t filter');
