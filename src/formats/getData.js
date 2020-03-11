@@ -1,6 +1,10 @@
 import { csvToJSON, jsonToCSV } from './csv';
 import listsToObjects from '../utils/listsToObjects';
 
+export const mimes = {
+	'csv': 'text/csv'
+};
+
 const extractionMethods = {
 	csv: (fileData, fef) => {
 		const jsonData = csvToJSON(fileData);

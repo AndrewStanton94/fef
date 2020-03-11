@@ -10,6 +10,11 @@ export class Fef {
 		this.dataType = dataType;
 		this.data = {};
 		this.options = options;
+		this.mime = mimes[dataType] || undefined;
+
+		if (typeof this.mime === 'undefined') {
+			console.warn(`This format ${dataType} doesn't have a mime.`);
+		}
 	}
 
 	saveJSON(relPath, data) {
