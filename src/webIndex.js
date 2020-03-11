@@ -37,5 +37,5 @@ window.addEventListener('load', () => {
 		return { url, name, uuid, email };
 	});
 
-	processor.run();
+	processor.run('testOut.csv', 'csv');
 });

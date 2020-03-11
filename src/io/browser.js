@@ -29,3 +29,12 @@ export const getFromBrowser = (elementId) =>
 			};
 		});
 	});
+
+export const saveToDevice = (exportableData, fileName, mime) => {
+	const file = new File(exportableData.split('\n'), fileName, { type: mime });
+	const url = URL.createObjectURL(file);
+
+	const downloadLink = document.getElementById('downloadLink');
+	downloadLink.href = url;
+	downloadLink.download = fileName;
+};

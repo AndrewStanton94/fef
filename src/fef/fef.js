@@ -1,6 +1,6 @@
 import { getLocalFile, saveLocalFile, writeJSON } from '../io/files';
-import { getFromBrowser } from '../io/browser';
-import { extractData, setData } from '../formats/getData';
+import { getFromBrowser, saveToDevice } from '../io/browser';
+import { extractData, setData, mimes } from '../formats/getData';
 import { processData } from './processData';
 import checkLinks from './checkLinks';
 
@@ -74,16 +74,23 @@ export class Fef {
 	}
 
 	save(format, outputPath, fef) {
-		const exportableData = setData(format, fef.data.processed);
-		saveLocalFile(exportableData, outputPath);
+		const {data} = fef;
+		const dataToSave = data.validated ? data.validated : data.processed;
+		const exportableData = setData(format, dataToSave);
+
+		if (fef.options.platform === 'browser') {
+			saveToDevice(exportableData, outputPath, fef.mime);
+		} else {
+			saveLocalFile(exportableData, outputPath);
+		}
 		return fef;
 	}
 
-	run(outputPath) {
+	run(outputPath, format) {
 		this.getFile()
 			.then((data) => this.extractDataFromFile(data, this))
 			.then(() => this.process(this))
-			.then(() => this.save('csv', outputPath, this))
+			.then(() => this.save(format, outputPath, this))
 			.then((x) => console.log('from process: ', x))
 			.catch((err) => console.error(err));
 	}
