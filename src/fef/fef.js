@@ -2,7 +2,6 @@ import { getLocalFile, saveLocalFile, writeJSON } from '../io/files';
 import { getFromBrowser, saveToDevice } from '../io/browser';
 import { extractData, setData, mimes } from '../formats/getData';
 import { processData } from './processData';
-import checkLinks from './checkLinks';
 
 export class Fef {
 	constructor(url, dataType, options = {}) {
@@ -66,11 +65,16 @@ export class Fef {
 		return processData(fef);
 	}
 
-	resultValidation() {
-		const dataToValidate = this.data.processed;
-		const validated = checkLinks(dataToValidate);
-		this.data.validated = validated;
-		return;
+	validate(fef) {
+		if (typeof fef.postProcessValidation !== 'undefined') {
+			const dataToValidate = fef.data.processed;
+			const validated = fef.postProcessValidation(dataToValidate);
+			return validated.then((valid) => {
+				fef.data.validated = valid;
+				return fef;
+			});
+		}
+		return fef;
 	}
 
 	save(format, outputPath, fef) {
@@ -90,6 +94,7 @@ export class Fef {
 		this.getFile()
 			.then((data) => this.extractDataFromFile(data, this))
 			.then(() => this.process(this))
+			.then(() => this.validate(this))
 			.then(() => this.save(format, outputPath, this))
 			.then((x) => console.log('from process: ', x))
 			.catch((err) => console.error(err));

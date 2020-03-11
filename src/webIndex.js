@@ -1,5 +1,10 @@
 import { Fef } from './fef/fef';
 
+import axios from 'axios';
+
+import { chunks } from './utils/karataev';
+import { yeahNah } from './utils/utils';
+
 // console.log(Fef);
 
 window.addEventListener('load', () => {
@@ -36,6 +41,74 @@ window.addEventListener('load', () => {
 		)}(${uuid})/publications.html`;
 		return { url, name, uuid, email };
 	});
+
+	processor.setPostProcessValidation(
+		(academics) =>
+			new Promise((resolve, reject) => {
+				const instance = axios.create();
+				let exportAcademics;
+
+				const requestURL = (academic, instance) =>
+					instance
+						.head(academic.url)
+						.then(({ status, statusText, request }) => {
+							let { url } = academic;
+							const { path } = request;
+
+							if (
+								url.replace(
+									'https://researchportal.port.ac.uk',
+									''
+								) !== path
+							) {
+								status = 301;
+								statusText = 'Has been redirected';
+							}
+
+							const linkData = {
+								url,
+								status,
+								statusText,
+								path,
+							};
+							academic.linkData = linkData;
+
+							return academic;
+						})
+						.catch(({ message }) => ({
+							academic,
+							error: message,
+						}));
+
+				chunks(
+					academics,
+					(academic) => requestURL(academic, instance),
+					25
+				).then((output) => {
+					const {
+						yeah: foundAcademics = [],
+						nah: missingAcademics = [],
+					} = yeahNah(
+						(academic) => typeof academic.error === 'undefined',
+						output
+					);
+
+					console.log('Valid items: ', foundAcademics);
+					console.log('Rejections: ', missingAcademics);
+
+					exportAcademics = foundAcademics.map(
+						({ name, url, email }) => {
+							return {
+								name,
+								url,
+								email,
+							};
+						}
+					);
+					resolve(exportAcademics);
+				});
+			})
+	);
 
 	processor.run('testOut.csv', 'csv');
 });
