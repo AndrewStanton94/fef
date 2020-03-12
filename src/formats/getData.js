@@ -2,7 +2,8 @@ import { csvToJSON, jsonToCSV } from './csv';
 import listsToObjects from '../utils/listsToObjects';
 
 export const mimes = {
-	'csv': 'text/csv'
+	csv: 'text/csv',
+	json: 'application/json'
 };
 
 const extractionMethods = {
@@ -10,10 +11,12 @@ const extractionMethods = {
 		const jsonData = csvToJSON(fileData);
 		return listsToObjects(jsonData[0], jsonData.slice(1));
 	},
+	json: (data) => JSON.parse(data)
 };
 
 const exportPrepMethods = {
 	csv: (dataToPrepareForExport) => jsonToCSV(dataToPrepareForExport),
+	json: (data) => JSON.stringify(data)
 };
 
 export const extractData = (data, dataType, debugging, debugOptions) => {
