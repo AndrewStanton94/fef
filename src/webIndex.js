@@ -8,7 +8,15 @@ import { yeahNah } from './utils/utils';
 // console.log(Fef);
 
 window.addEventListener('load', () => {
-	const processor = new Fef('#uploadForm', 'csv', { platform: 'browser' });
+	const processor = new Fef('#uploadForm', 'csv', {
+		platform: 'browser',
+		debug: { limit: 80 },
+		browser: {
+			downloadLinkElem: document.getElementById('downloadLink'),
+			// From vue app
+			// displayDownloadLink: this.setReadyToDownload,
+		},
+	});
 	processor.setInputPreparation((academic) =>
 		academic['Name variant > Known as name-0'] &&
 		academic['UUID-1'] &&
