@@ -10,6 +10,7 @@ export class Fef {
 		this.data = {};
 		this.options = options;
 		this.mime = mimes[dataType] || undefined;
+		this.supportedMimes = mimes;
 
 		if (typeof this.mime === 'undefined') {
 			console.warn(`This format ${dataType} doesn't have a mime.`);
@@ -78,12 +79,19 @@ export class Fef {
 	}
 
 	save(format, outputPath, fef) {
-		const {data} = fef;
+		// fef.options.browser.displayDownload();
+		const { data } = fef;
 		const dataToSave = data.validated ? data.validated : data.processed;
 		const exportableData = setData(format, dataToSave);
 
 		if (fef.options.platform === 'browser') {
-			saveToDevice(exportableData, outputPath, fef.mime);
+			saveToDevice(
+				exportableData,
+				outputPath,
+				fef.mime,
+				fef.options.browser.downloadLinkElem,
+				fef.options.browser.displayDownloadLink
+			);
 		} else {
 			saveLocalFile(exportableData, outputPath);
 		}

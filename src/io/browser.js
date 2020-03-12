@@ -13,28 +13,33 @@ export const getFromBrowser = (elementId) =>
 			reject('Not a file input element');
 		}
 
-		elem.addEventListener('change', (changeEvent) => {
-			const reader = new FileReader();
-			const file = changeEvent.target.files[0];
-			console.log(file);
+		const reader = new FileReader();
+		const file = document.getElementById('uploadForm').files[0];
+		console.log(file);
 
-			reader.readAsText(file);
-			reader.onload = (loadEvent) => {
-				const extractedData = loadEvent.target.result;
-				console.log('Data extracted by FileReader: ', extractedData);
-				resolve(extractedData);
-			};
-			reader.onerror = (err) => {
-				reject('An error from the FileReader: ', err);
-			};
-		});
+		reader.readAsText(file);
+		reader.onload = (loadEvent) => {
+			const extractedData = loadEvent.target.result;
+			console.log('Data extracted by FileReader: ', extractedData);
+			resolve(extractedData);
+		};
+		reader.onerror = (err) => {
+			reject('An error from the FileReader: ', err);
+		};
 	});
 
-export const saveToDevice = (exportableData, fileName, mime) => {
+export const saveToDevice = (
+	exportableData,
+	fileName,
+	mime,
+	downloadLinkElem,
+	displayDownloadLink
+) => {
 	const file = new File(exportableData.split('\n'), fileName, { type: mime });
 	const url = URL.createObjectURL(file);
 
-	const downloadLink = document.getElementById('downloadLink');
-	downloadLink.href = url;
-	downloadLink.download = fileName;
+	downloadLinkElem.href = url;
+	downloadLinkElem.download = fileName;
+
+	displayDownloadLink();
 };
