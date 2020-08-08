@@ -30,5 +30,8 @@ export const extractData = (data, dataType, debugging, debugOptions) => {
 };
 
 export const setData = (format, data) => {
+	if (!format) {
+		throw new Error('setData didn\'t receive a format');
+	}
 	return exportPrepMethods[format](data);
 };
