@@ -1,5 +1,3 @@
-import { yeahNah } from '../utils/utils';
-
 export const processData = (fef) => {
 	console.log(
 		`There are ${fef.data.extractedData.length} items from the file`
@@ -13,6 +11,7 @@ export const processData = (fef) => {
 			.filter((item) => typeof item !== 'undefined');
 
 		const itemsRemaining = preparedItems.length;
+		fef.stats.dataToProcess = itemsRemaining;
 		if (!itemsRemaining) {
 			return Promise.reject('Filtering removed all items');
 		}
@@ -25,9 +24,11 @@ export const processData = (fef) => {
 	}
 
 	const processedData = fef.data.validData.flatMap(fef.transformation);
-	fef.data.processed = processedData;
+	return Promise.all(processedData).then((results) => {
+		fef.data.processed = results;
 
-	// fef.saveJSON('../../data/debug/processedData.json', processedData);
+		fef.saveJSON('../../data/debug/processedData.json', results);
 
-	return fef;
+		return fef;
+	});
 };

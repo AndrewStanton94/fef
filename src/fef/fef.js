@@ -3,7 +3,18 @@ import { getFromBrowser, saveToDevice } from '../io/browser';
 import { extractData, setData, mimes } from '../formats/getData';
 import { processData } from './processData';
 
+/**
+ * @typedef {Object} FefOptions
+ * @property {object} debug
+ * @property {number} debug.limit
+ */
+
 export class Fef {
+	/**
+	 * @param  {string} url
+	 * @param  {string} dataType of the input data
+	 * @param  {?FefOptions} options={}
+	 */
 	constructor(url, dataType, options = {}) {
 		this.url = url;
 		this.dataType = dataType;
@@ -11,6 +22,11 @@ export class Fef {
 		this.options = options;
 		this.mime = mimes[dataType] || undefined;
 		this.supportedMimes = mimes;
+		this.stats = {
+			receivedData: 0,
+			dataToProcess: 0,
+			validData: 0,
+		};
 
 		if (typeof this.mime === 'undefined') {
 			console.warn(`This format ${dataType} doesn't have a mime.`);
@@ -58,6 +74,7 @@ export class Fef {
 
 	extractDataFromFile(data, fef) {
 		const extractedData = extractData(data, fef.dataType, ...fef.isDebug());
+		fef.stats.receivedData = extractedData.length;
 		fef.data.extractedData = extractedData;
 		return fef;
 	}
@@ -70,10 +87,9 @@ export class Fef {
 		if (typeof fef.postProcessValidation !== 'undefined') {
 			const dataToValidate = fef.data.processed;
 			const validated = fef.postProcessValidation(dataToValidate);
-			return validated.then((valid) => {
-				fef.data.validated = valid;
-				return fef;
-			});
+			fef.stats.validData = validated.length;
+			fef.data.validated = validated;
+			return fef;
 		}
 		return fef;
 	}
