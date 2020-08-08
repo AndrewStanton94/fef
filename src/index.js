@@ -1,13 +1,50 @@
 import { Fef } from './fef/fef';
+const { JSDOM } = require('jsdom');
 
-const processor = new Fef('../../data/input.csv', 'csv', {
+const processor = new Fef('../../data/dataPort.csv', 'csv', {
 });
 
-processor.setItemTransformation((row1) => {
-	const row2 = {...row1};
-	row1.Device = 'Desktop';
-	row2.Device = 'Mobile';
-	return [row1, row2];
+processor.setInputPreparation((item) => {
+	const [address, statusCode, status, ...links] = Object.values(item);
+	const validLinks = links.filter((link) => link);
+
+	if (validLinks.length) {
+		return {
+			address,
+			links: validLinks,
+		};
+	} else {
+		return undefined;
+	}
 });
 
-processor.run();
+processor.setItemTransformation(({ address, links }) => {
+	const localURLsOpeningInNewTabs = links.map((link) => {
+		const fragment = JSDOM.fragment(link);
+		const a = fragment.children[0];
+		const href = a.href;
+		const textContent = a.textContent;
+		let hostname = '';
+		try {
+			hostname = new URL(href).hostname;
+		} catch (error) {
+			console.warn(`Invalid input on page: ${address} => ${href}` );
+			hostname = `INVALID: ${href}`;
+		}
+
+		return {
+			href,
+			textContent,
+			hostname
+		};
+	}).filter(({hostname}) => hostname.includes('port.ac.uk') || hostname.includes('INVALID'));
+
+	return localURLsOpeningInNewTabs.map(({href, textContent, hostname}) => ({
+		page: address,
+		textContent,
+		hostname,
+		linksTo: href
+	}));
+});
+
+processor.run('../../data/out/dataPort.csv');
