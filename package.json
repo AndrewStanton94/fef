@@ -21,6 +21,7 @@
 		"@babel/cli": "^7.6.4",
 		"@babel/core": "^7.6.4",
 		"@babel/eslint-parser": "^7.11.0",
+		"@babel/plugin-proposal-class-properties": "^7.10.4",
 		"@babel/preset-env": "^7.6.3",
 		"eslint": "^7.6.0",
 		"parcel-bundler": "^1.12.4"
