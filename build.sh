@@ -1,7 +1,10 @@
 #!/bin/bash
 
 rm -r dist
-# rm data/out/*
-rm data/debug/*
-
-npm run build && node dist/testIndex.js
+if command -v npm &> /dev/null
+then
+	npm run build && node dist/index.js
+else
+	/usr/local/bin/npm run build &&\
+	/usr/local/bin/node dist/index.js
+fi
