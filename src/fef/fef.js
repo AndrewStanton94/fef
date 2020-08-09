@@ -20,7 +20,7 @@ import { processData } from './processData';
 
 /**
  * @typedef {string} url
- * @typedef {('csv'|'json')} IO-Formats
+ * @typedef {('csv'|'json')} IOFormats
  */
 
 /** The For-Each Files class
@@ -40,7 +40,7 @@ export class Fef {
 
 	/** Create a For-Each File processor
 	 * @param  {url} url - Where the input file is
-	 * @param  {IO-Formats} dataType - What file type
+	 * @param  {IOFormats} dataType - What file type
 	 * @param  {?FefOptions} options={} - Configure the processor
 	 */
 	constructor(url, dataType, options = {}) {
@@ -145,7 +145,7 @@ export class Fef {
 		return fef;
 	}
 	/** Save the results to a file
-	 * @param  {IO-Formats} format
+	 * @param  {IOFormats} format
 	 * @param  {url} outputPath
 	 * @param  {Fef} fef
 	 */
@@ -170,7 +170,7 @@ export class Fef {
 	}
 	/** Process the file and save the output
 	 * @param  {url} outputPath
-	 * @param  {IO-Formats} format
+	 * @param  {IOFormats} format
 	 */
 	run(outputPath, format) {
 		this.getFile()
