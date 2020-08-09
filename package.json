@@ -1,5 +1,5 @@
 {
-	"name": "fef",
+	"name": "@andrewstanton94/fef",
 	"version": "1.0.0",
 	"description": "For-Each File. A file processing framework",
 	"main": "dist/fef/fef.js",
