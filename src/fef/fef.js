@@ -21,6 +21,7 @@ import { processData } from './processData';
 /**
  * @typedef {string} url
  * @typedef {('csv'|'json')} IOFormats
+ * @typedef {string} JSONString
  */
 
 /** The For-Each Files class

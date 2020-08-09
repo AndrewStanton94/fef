@@ -1,8 +1,16 @@
 const fs = require('fs');
 const { join } = require('path');
 
+/** Create an absolute filepath from a relative one
+ * @param  {string} relPath
+ * @returns {string} Absolute file path
+ */
 const absFilePath = (relPath) => join(__dirname, relPath);
 
+/** Get the contents of a file on the local machine
+ * @param  {string} url
+ * @returns {string} File content
+ */
 export const getLocalFile = (url) =>
 	new Promise((resolve, reject) => {
 		const absURL = absFilePath(url);
@@ -18,16 +26,20 @@ export const getLocalFile = (url) =>
 		});
 	});
 
-const writeFile = (relPath, data) => {
-	fs.writeFile(absFilePath(relPath), data, (err) => {
+/** Save data to file
+ * @param  {string} exportableData
+ * @param  {string} outputPath
+ */
+export const saveLocalFile = (exportableData, outputPath) => {
+	fs.writeFile(absFilePath(outputPath), exportableData, (err) => {
 		if (err) throw err;
-		console.log('Saved!', relPath);
+		console.log('Saved!', outputPath);
 	});
 };
 
-export const saveLocalFile = (exportableData, outputPath) => {
-	writeFile(outputPath, exportableData);
-};
-
+/** Convert to JSON and save file
+ * @param  {string} relPath
+ * @param  {string} data
+ */
 export const writeJSON = (relPath, data) =>
-	writeFile(relPath, JSON.stringify(data));
+	saveLocalFile(JSON.stringify(data), relPath);
