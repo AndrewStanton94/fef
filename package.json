@@ -1,8 +1,8 @@
 {
 	"name": "fef",
 	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
+	"description": "For-Each File. A file processing framework",
+	"main": "dist/fef/fef.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build": "babel src --out-dir dist",
@@ -10,8 +10,21 @@
 		"webBuild": "parcel build src/webIndex.html --public-url ./"
 	},
 	"keywords": [],
-	"author": "",
-	"license": "ISC",
+	"author": "Andrew Stanton",
+	"license": "GPL-3.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/AndrewStanton94/fef.git"
+	},
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com/"
+	},
+	"bugs": {
+		"url": "https://github.com/AndrewStanton94/fef/issues"
+	},
+	"files": [
+		"dist/**"
+	],
 	"dependencies": {
 		"axios": "^0.19.0",
 		"jsdom": "^15.2.1",
