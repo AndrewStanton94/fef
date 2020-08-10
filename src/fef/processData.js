@@ -38,7 +38,9 @@ export const processData = async (fef) => {
 		fef.data.validData = fef.data.extractedData;
 	}
 
-	const processedData = fef.data.validData.flatMap(fef.transformation);
+	const processedData = fef.data.validData.flatMap((data) =>
+		fef.transformation(data, fef)
+	);
 	return Promise.all(processedData).then((results) => {
 		fef.data.processed = results;
 
