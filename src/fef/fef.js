@@ -75,10 +75,12 @@ export class Fef {
 
 	/** [Optional] Set a function to be called on each item of input.
 	 * Use this to prepare the data for processing.
-	 * @param  {function():} filter
+	 * @param  {function():} filter - Method to apply to the data
+	 * @param {boolean} prepareEachInput - Pass each item separately or as one object
 	 */
-	setInputPreparation(filter) {
+	setInputPreparation(filter, prepareEachInput = true) {
 		this.inputPreparation = filter;
+		this.prepareEachInput = prepareEachInput;
 	}
 
 	/** Set the transformation to use on each data item

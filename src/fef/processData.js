@@ -1,14 +1,29 @@
-export const processData = (fef) => {
-	console.log(
-		`There are ${fef.data.extractedData.length} items from the file`
-	);
+export const processData = async (fef) => {
+	if (fef.prepareEachInput) {
+		console.log(
+			`There are ${fef.data.extractedData.length} items from the file`
+		);
+	}
 
 	if (fef.inputPreparation) {
-		console.log('Will filter');
+		console.log('Processing input');
 
-		const preparedItems = fef.data.extractedData
-			.map(fef.inputPreparation)
-			.filter((item) => typeof item !== 'undefined');
+		let preparedItems;
+		/**
+		 * Process input as individual items or as a single object
+		 */
+		if (fef.prepareEachInput) {
+			preparedItems = fef.data.extractedData
+				.map(fef.inputPreparation)
+				.filter((item) => typeof item !== 'undefined');
+		} else {
+			const { items, processor } = await fef.inputPreparation(
+				fef.data.extractedData,
+				fef
+			);
+			preparedItems = items;
+			fef = processor;
+		}
 
 		const itemsRemaining = preparedItems.length;
 		fef.stats.dataToProcess = itemsRemaining;
